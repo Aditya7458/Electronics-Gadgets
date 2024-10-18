@@ -4,7 +4,6 @@ namespace OrderManagementSystem
 {
     public class Customers
     {
-        // Private fields for encapsulation
         private int customerId;
         private string firstName;
         private string lastName;
@@ -12,7 +11,6 @@ namespace OrderManagementSystem
         private string phone;
         private string address;
 
-        // Constructor to initialize attributes
         public Customers(int customerId, string firstName, string lastName, string email, string phone, string address)
         {
             this.CustomerID = customerId;
@@ -23,7 +21,6 @@ namespace OrderManagementSystem
             this.Address = address;
         }
 
-        // Public properties with data validation
         public int CustomerID
         {
             get { return customerId; }
@@ -65,7 +62,6 @@ namespace OrderManagementSystem
             set { address = value; }
         }
 
-        // Methods
         public void GetCustomerDetails()
         {
             Console.WriteLine($"Customer ID: {CustomerID}, Name: {FirstName} {LastName}, Email: {Email}, Phone: {Phone}, Address: {Address}");
@@ -80,7 +76,6 @@ namespace OrderManagementSystem
 
         public int CalculateTotalOrders()
         {
-            // Placeholder logic: Total orders calculation would depend on external order data
             return 0;
         }
     }

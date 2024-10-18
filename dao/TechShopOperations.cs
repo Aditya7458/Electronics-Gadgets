@@ -8,6 +8,20 @@ public class TechShopOperations
 {
     private string _connectionString = DBPropertyUtil.GetConnectionString("dbProperties.txt");
 
+    //public void RecordPayment(int orderId, decimal amount, string paymentMethod)
+    //{
+    //    using (SqlConnection conn = new SqlConnection(_connectionString))
+    //    {
+    //        conn.Open();
+    //        SqlCommand cmd = new SqlCommand("INSERT INTO Payments (OrderID, Amount, PaymentMethod) VALUES (@OrderID, @Amount, @PaymentMethod)", conn);
+    //        cmd.Parameters.AddWithValue("@OrderID", orderId);
+    //        cmd.Parameters.AddWithValue("@Amount", amount);
+    //        cmd.Parameters.AddWithValue("@PaymentMethod", paymentMethod);
+
+    //        cmd.ExecuteNonQuery();
+    //        Console.WriteLine("Payment recorded successfully.");
+    //    }
+    //}
     public void RegisterCustomer(string firstName, string lastName, string email, string phone, string address)
     {
         using (var conn = DBConnUtil.GetDBConn(_connectionString))
@@ -47,11 +61,10 @@ public class TechShopOperations
     {
         using (var conn = DBConnUtil.GetDBConn(_connectionString))
         {
-            // Assuming order total will be calculated later based on product price
             var cmd = new SqlCommand("INSERT INTO Orders (CustomerID, OrderDate, TotalAmount) OUTPUT INSERTED.OrderID VALUES (@CustomerId, @OrderDate, @TotalAmount)", conn);
             cmd.Parameters.AddWithValue("@CustomerId", customerId);
             cmd.Parameters.AddWithValue("@OrderDate", DateTime.Now);
-            cmd.Parameters.AddWithValue("@TotalAmount", 0); // Placeholder, to be updated later
+            cmd.Parameters.AddWithValue("@TotalAmount", 0); 
 
             try
             {
@@ -96,6 +109,4 @@ public class TechShopOperations
             Console.WriteLine($"Order Status: {status}");
         }
     }
-
-    // Implement other methods based on the tasks specified (e.g., Inventory Management, Sales Reporting, etc.)
 }

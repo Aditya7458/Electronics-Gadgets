@@ -1,9 +1,7 @@
-﻿// File: Exceptions/ProductNotFoundException.cs
-using System;
+﻿using System;
 
 namespace Exceptions
 {
-    // Custom exception for product not found cases
     public class ProductNotFoundException : Exception
     {
         public ProductNotFoundException() : base() { }

@@ -4,14 +4,11 @@ namespace OrderManagementSystem
 {
     public class Products
     {
-        // Private fields for encapsulation
         private int productId;
         private string productName;
         private string description;
         private decimal price;
         private int stockQuantity;
-
-        // Constructor to initialize attributes
         public Products(int productId, string productName, string description, decimal price, int stockQuantity)
         {
             this.ProductID = productId;
@@ -21,7 +18,6 @@ namespace OrderManagementSystem
             this.StockQuantity = stockQuantity;
         }
 
-        // Public properties with data validation
         public int ProductID
         {
             get { return productId; }

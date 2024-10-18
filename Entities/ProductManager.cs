@@ -1,65 +1,146 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using OrderManagementSystem;
+using System.Data;
+using Microsoft.Data.SqlClient;
+using OrderManagementSystem; 
 using Exceptions; 
 
 namespace Manager
 {
     public class ProductManager
     {
-        private List<Products> products;
+        // Connection string for database
+        private string connectionString = DBPropertyUtil.GetConnectionString("dbProperties.txt");
 
-        public ProductManager()
-        {
-            products = new List<Products>();
-        }
-
-        // Method to add a product
+        // Method to add a product to the database
         public void AddProduct(Products product)
         {
-            if (products.Any(p => p.ProductID == product.ProductID))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                throw new ProductNotFoundException("Product with the same ID already exists.");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("INSERT INTO Products (ProductName, Description, Price, StockQuantity) VALUES (@ProductName, @Description, @Price, @StockQuantity)", conn);
+
+                cmd.Parameters.AddWithValue("@ProductName", product.ProductName);
+                cmd.Parameters.AddWithValue("@Description", product.Description);
+                cmd.Parameters.AddWithValue("@Price", product.Price);
+                cmd.Parameters.AddWithValue("@StockQuantity", product.StockQuantity);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("Product added successfully.");
+                }
+                catch (SqlException ex)
+                {
+                    throw new ProductNotFoundException("Error adding product: " + ex.Message);
+                }
             }
-            products.Add(product);
         }
 
-        // Method to update a product
+        // Method to update an existing product in the database
         public void UpdateProduct(Products product)
         {
-            var existingProduct = products.FirstOrDefault(p => p.ProductID == product.ProductID);
-            if (existingProduct == null)
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                throw new ProductNotFoundException("Product not found.");
-            }
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE Products SET ProductName = @ProductName, Description = @Description, Price = @Price, StockQuantity = @StockQuantity WHERE ProductID = @ProductID", conn);
 
-            existingProduct.ProductName = product.ProductName;
-            existingProduct.Description = product.Description;
-            existingProduct.Price = product.Price;
+                cmd.Parameters.AddWithValue("@ProductID", product.ProductID);
+                cmd.Parameters.AddWithValue("@ProductName", product.ProductName);
+                cmd.Parameters.AddWithValue("@Description", product.Description);
+                cmd.Parameters.AddWithValue("@Price", product.Price);
+                cmd.Parameters.AddWithValue("@StockQuantity", product.StockQuantity);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected == 0)
+                {
+                    throw new ProductNotFoundException("Product not found.");
+                }
+                else
+                {
+                    Console.WriteLine("Product updated successfully.");
+                }
+            }
         }
 
-        // Method to remove a product
+        // Method to remove a product from the database
         public void RemoveProduct(int productId)
         {
-            var product = products.FirstOrDefault(p => p.ProductID == productId);
-            if (product == null)
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                throw new ProductNotFoundException("Product not found.");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("DELETE FROM Products WHERE ProductID = @ProductID", conn);
+                cmd.Parameters.AddWithValue("@ProductID", productId);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected == 0)
+                {
+                    throw new ProductNotFoundException("Product not found.");
+                }
+                else
+                {
+                    Console.WriteLine("Product removed successfully.");
+                }
             }
-            products.Remove(product);
         }
 
-        // Method to search for a product by name
+        // Method to search products by name in the database
         public List<Products> SearchProductsByName(string name)
         {
-            return products.Where(p => p.ProductName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+            List<Products> productList = new List<Products>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT ProductID, ProductName, Description, Price, StockQuantity FROM Products WHERE ProductName LIKE @ProductName", conn);
+                cmd.Parameters.AddWithValue("@ProductName", "%" + name + "%");
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Products product = new Products(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetString(2),
+                            reader.GetDecimal(3),
+                            reader.GetInt32(4)
+                        );
+                        productList.Add(product);
+                    }
+                }
+            }
+
+            return productList;
         }
 
-        // Method to list all products
+        // Method to list all products from the database
         public List<Products> ListAllProducts()
         {
-            return products;
+            List<Products> productList = new List<Products>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT ProductID, ProductName, Description, Price, StockQuantity FROM Products", conn);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Products product = new Products(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetString(2),
+                            reader.GetDecimal(3),
+                            reader.GetInt32(4)
+                        );
+                        productList.Add(product);
+                    }
+                }
+            }
+
+            return productList;
         }
     }
 }

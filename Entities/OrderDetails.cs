@@ -4,13 +4,11 @@ namespace OrderManagementSystem
 {
     public class OrderDetails
     {
-        // Private fields for encapsulation
         private int orderDetailId;
-        private Orders order;  // Composition relationship
-        private Products product;  // Composition relationship
+        private Orders order;  
+        private Products product; 
         private int quantity;
 
-        // Constructor to initialize attributes
         public OrderDetails(int orderDetailId, Orders order, Products product, int quantity)
         {
             this.OrderDetailID = orderDetailId;
@@ -19,7 +17,6 @@ namespace OrderManagementSystem
             this.Quantity = quantity;
         }
 
-        // Public properties with data validation
         public int OrderDetailID
         {
             get { return orderDetailId; }
@@ -49,7 +46,6 @@ namespace OrderManagementSystem
             }
         }
 
-        // Methods
         public decimal CalculateSubtotal()
         {
             return Product.Price * Quantity;
@@ -67,7 +63,6 @@ namespace OrderManagementSystem
 
         public void AddDiscount(decimal discountAmount)
         {
-            // Placeholder logic: In reality, discount would reduce subtotal based on rules
             Console.WriteLine($"Discount of {discountAmount:C} applied to the order detail.");
         }
     }

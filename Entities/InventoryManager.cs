@@ -1,6 +1,6 @@
 //using System;
 //using System.Collections.Generic;
-
+//using OrderManagementSystem;
 //public class InventoryManager
 //{
 //    private SortedList<int, Inventory> inventoryList;
@@ -18,7 +18,7 @@
 //        }
 //        else
 //        {
-//            var newInventory = new Inventory(inventoryList.Count + 1, new Product(productId, "Product", 0), quantity);
+//            var newInventory = new Inventory(inventoryList.Count + 1, new Products(productId, "Product", 0), quantity);
 //            inventoryList.Add(productId, newInventory);
 //        }
 //    }

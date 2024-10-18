@@ -5,25 +5,22 @@ namespace OrderManagementSystem
 {
     public class Orders
     {
-        // Private fields for encapsulation
         private int orderId;
-        private Customers customer;  // Composition relationship
+        private Customers customer;  
         private DateTime orderDate;
-        private List<OrderDetails> orderDetails;  // List to hold order details
+        private List<OrderDetails> orderDetails;  
         private decimal totalAmount;
         private string status;
 
-        // Constructor to initialize attributes
         public Orders(int orderId, Customers customer, DateTime orderDate)
         {
             this.OrderID = orderId;
             this.Customer = customer;
             this.OrderDate = orderDate;
-            this.orderDetails = new List<OrderDetails>();  // Initialize the list
-            this.Status = "Processing"; // Default status
+            this.orderDetails = new List<OrderDetails>();  
+            this.Status = "Processing"; 
         }
 
-        // Public properties with data validation
         public int OrderID
         {
             get { return orderId; }
@@ -44,7 +41,7 @@ namespace OrderManagementSystem
 
         public decimal TotalAmount
         {
-            get { return 5; } // Calculate total amount on retrieval
+            get { return 5; }
             private set { totalAmount = value; }
         }
 
@@ -54,7 +51,6 @@ namespace OrderManagementSystem
             set { status = value; }
         }
 
-        // Methods
         public void AddOrderDetail(OrderDetails orderDetail)
         {
             orderDetails.Add(orderDetail);

@@ -2,7 +2,6 @@ using System;
 
 namespace Exceptions
 {
-    // Custom Exception for Customer-related issues
     public class CustomerException : Exception
     {
         public CustomerException() : base() { }

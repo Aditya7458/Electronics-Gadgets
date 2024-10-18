@@ -4,20 +4,16 @@ namespace OrderManagementSystem
 {
     public class Inventory
     {
-        // Private fields for encapsulation
         private int inventoryId;
-        private Products product;  // Composition relationship
+        private Products product;  
         private int quantityInStock;
 
-        // Constructor to initialize attributes
         public Inventory(int inventoryId, Products product, int quantityInStock)
         {
             this.InventoryID = inventoryId;
             this.Product = product;
             this.QuantityInStock = quantityInStock;
         }
-
-        // Public properties with data validation
         public int InventoryID
         {
             get { return inventoryId; }
@@ -40,8 +36,6 @@ namespace OrderManagementSystem
                 quantityInStock = value;
             }
         }
-
-        // Methods
         public void AddToInventory(int quantity)
         {
             QuantityInStock += quantity;
